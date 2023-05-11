@@ -12,5 +12,8 @@
   "devDependencies": {
     "@types/prompt-sync": "^4.2.0",
     "prompt-sync": "^4.2.0"
+  },
+  "dependencies": {
+    "ncaparts-ctrl": "github:lik3as/ncaparts-ctrl"
   }
 }
