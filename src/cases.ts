@@ -49,6 +49,8 @@ export default {
     console.log('Esta tabela contém dados já existentes no banco de dados? (s/n)');
     (prompt('') == 's') ? url += '&b=bulk' : void(0);
 
-    console.log((await instance.post(url, bodies_obj)).data);
+    console.log('O \x1b[32mservidor\x1b[0m diz: ')
+    const data = (await instance.post(url, bodies_obj)).data
+    console.log(data);
   }
 }

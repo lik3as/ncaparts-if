@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "bx": "npx tsc & node ./dist/index.js",
+    "x": "node ./dist/index.js",
     "test": "echo \"error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,7 +19,6 @@
     "axios": "^1.4.0",
     "prompt-sync": "^4.2.0",
     "tsc": "^2.0.4",
-    "typescript": "^5.0.4",
-    "yar": "^9.1.0"
+    "typescript": "^5.0.4"
   }
 }
