@@ -53,6 +53,8 @@ async function options(opt: string): Promise<boolean> {
       return run;
     }
     case 'u': {
+      const table = prompt('Tabela da atualização: ')
+      await case_functions.update(table);
       return run;
     }
     case 'm':{
@@ -85,7 +87,7 @@ async function options(opt: string): Promise<boolean> {
     }
     case 'g': {
       const table = prompt('Tabela fonte: ');
-      const columns: Object = (await instance.get('tables/' + table + '/columns')).data
+      const columns: Object = (await instance.get(table + '/columns')).data
       
       const properties: string[] = Object.keys(columns).filter(str => !str.includes('created') && !str.includes('updated'))
 
@@ -99,7 +101,7 @@ async function options(opt: string): Promise<boolean> {
       })
 
       case_functions.generate(table, fprop);
-
+      console.log('Tabela gerada');
       return run;
     }
     default: {
