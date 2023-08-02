@@ -21,6 +21,7 @@ export default {
   generate(table: string, columns: string[]): void {
     ws = xlsx.utils.aoa_to_sheet([columns], {cellStyles: true})
     try{
+      console.log(columns);
       xlsx.utils.book_append_sheet(wb, ws, table);
 
       xlsx.writeFileXLSX(wb, xlpath);

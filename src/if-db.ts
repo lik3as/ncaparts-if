@@ -3,8 +3,10 @@ import ps from "prompt-sync";
 import axios from "axios";
 import case_functions from './cases'
 
+const url = process.env.REST_API
+
 export const instance = axios.create({
-  baseURL: 'http://localhost:8080/',
+  baseURL: url,
   maxRedirects: 1
 });
 
@@ -70,7 +72,7 @@ async function options(opt: string): Promise<boolean> {
       const data: string[] = (await instance.get('tables/')).data
       const regex: RegExp =  /[A-Z][^A-Z]*[A-Z]/;
 
-      const filtered_data = data.filter(str => !regex.test(str))
+      const filtered_data = data.filter(str => !regex.test(str));
 
       console.log(filtered_data);
 
