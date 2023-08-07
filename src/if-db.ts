@@ -1,9 +1,17 @@
 //this is the database interface with the application user
 import ps from "prompt-sync";
 import axios from "axios";
-import case_functions from './cases'
+import dotenv from 'dotenv';
+import path from "path";
 
-const url = process.env.REST_API
+import case_functions from './cases';
+
+const envPath = path.resolve(__dirname, '..', '.env');
+dotenv.config({
+  path: envPath
+});
+
+const url = process.env.REST_API;
 
 export const instance = axios.create({
   baseURL: url,
