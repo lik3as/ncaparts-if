@@ -35,7 +35,7 @@ g - Gerar uma planilha para a tabela
 
 let run: boolean = true;
 export default (
-    async () => {
+  async () => {
     let input: string;
 
     while(true) {
