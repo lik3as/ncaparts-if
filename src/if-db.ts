@@ -1,6 +1,7 @@
 //this is the database interface with the application user
 import ps from "prompt-sync";
 import axios from "axios";
+import type { HeadersDefaults } from "axios";
 import dotenv from 'dotenv';
 import path from "path";
 
@@ -15,7 +16,7 @@ const url = process.env.REST_API;
 
 export const instance = axios.create({
   baseURL: url,
-  maxRedirects: 1
+  maxRedirects: 1,
 });
 
 const prompt = ps();
@@ -31,11 +32,19 @@ p - Mudar o caminho do arquivo .xlsx (padrão ../.xlsx)
 c - Consultar as tabelas
 g - Gerar uma planilha para a tabela
 --------------------------------------------------------------------
-`
+`;
 
 let run: boolean = true;
 export default (
   async () => {
+
+    const token = (await instance.post("auth/User", {
+      name: process.env.MASTER_NAME, passwd: process.env.MASTER_SECRET
+    }, { withCredentials: true  })).headers['set-cookie']![1];
+
+    instance.defaults.headers.post = { Cookie: token }
+    instance.defaults.headers.get = { Cookie: token }
+    
     let input: string;
 
     while(true) {
