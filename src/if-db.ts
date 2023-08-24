@@ -1,7 +1,5 @@
-//this is the database interface with the application user
 import ps from "prompt-sync";
 import axios from "axios";
-import type { HeadersDefaults } from "axios";
 import dotenv from 'dotenv';
 import path from "path";
 
@@ -13,7 +11,6 @@ dotenv.config({
 });
 
 const url = process.env.REST_API;
-
 export const instance = axios.create({
   baseURL: url,
   maxRedirects: 1,
@@ -42,6 +39,8 @@ export default (
       name: process.env.MASTER_NAME, passwd: process.env.MASTER_SECRET
     }, { withCredentials: true  })).headers['set-cookie']![1];
 
+    console.log("Sua token é: " + token + "\n");
+
     instance.defaults.headers.post = { Cookie: token }
     instance.defaults.headers.get = { Cookie: token }
     
@@ -53,11 +52,15 @@ export default (
       input = prompt('')
 
       if (input != undefined && input != ''){
-        run = await options(input);
+        try{
+          run = await options(input);
+        } catch(e) {
+          console.log("Error: " + e)
+        }
         continue;
       }
 
-      await new Promise(res => setTimeout(res, 30000))
+      await new Promise(res => setTimeout(res, 3000))
     }
   }
 )
@@ -112,7 +115,7 @@ async function options(opt: string): Promise<boolean> {
 
       let fprop: string[] = []; //Formatted properties
 
-      properties.forEach((val, i, arr) => {
+      properties.forEach((val, _, ) => {
         if (val.includes('id_'))  fprop.push(val.split('_')[1]); 
         else if (val != 'id'){
           fprop.push(val);

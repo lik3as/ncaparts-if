@@ -3,7 +3,6 @@ import PromptSync from 'prompt-sync';
 import fs from 'fs'
 import path from 'path'
 import { instance } from './if-db';
-import axios from 'axios';
 const prompt = PromptSync();
 
 const xlpath: string = path.resolve(__dirname, '..', 'db.xlsx')
@@ -41,10 +40,14 @@ export default {
     let bodies_obj: {}[] = [];
 
     //converte de string para boolean se o valor for "sim" ou "não"
-    bodies.forEach((body, i, arr) => {
-      Object.entries(body).forEach(([key, value], i, arr) => { 
+    bodies.forEach((body) => {
+      Object.entries(body).forEach(([key, value]) => { 
+        const valueArray = (value as string).toString().split(",").map((val) => val.trim());
+
         if (value == "sim" || (value == "não" || value == "nao")) {
           bodies_map.push([key, (value == "sim") ? true : false]);
+        } else if(valueArray.length >= 1 && (key as string)[(key as string).length - 1] == "s"){
+          bodies_map.push([key, valueArray])
         } else {
           bodies_map.push([key, value]);
         }
@@ -71,8 +74,8 @@ export default {
     let bodies_obj: {}[] = [];
 
     //converte de string para boolean se o valor for "sim" ou "não"
-    bodies.forEach((body, i, arr) => {
-      Object.entries(body).forEach(([key, value], i, arr) => { 
+    bodies.forEach((body) => {
+      Object.entries(body).forEach(([key, value]) => { 
         if (value == "sim" || (value == "não" || value == "nao")) {
           bodies_map.push([key, (value == "sim") ? true : false]);
         } else {

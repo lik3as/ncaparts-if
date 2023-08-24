@@ -12,14 +12,14 @@
   "author": "",
   "license": "isc",
   "devDependencies": {
-    "@types/prompt-sync": "^4.2.0",
-    "prompt-sync": "^4.2.0"
+    "@types/prompt-sync": "^4.2.0"
   },
   "dependencies": {
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "prompt-sync": "^4.2.0",
     "tsc": "^2.0.4",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "xlsx": "^0.18.5"
   }
 }
