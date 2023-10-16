@@ -2,7 +2,7 @@ import xlsx from 'xlsx'
 import PromptSync from 'prompt-sync';
 import fs from 'fs'
 import path from 'path'
-import { instance } from './if-db';
+import { instance, cats } from './if-db';
 const prompt = PromptSync();
 
 const xlpath: string = path.resolve(__dirname, '..', 'db.xlsx')
@@ -31,8 +31,10 @@ export default {
   },
 
   async insert(table: string): Promise<void> {
-    let url: string = `${table}?m=many`;
-
+    let url: string = cats.includes(table)
+    ? `Produtos/${table}?m=many&object_type=body`
+    : `${table}?m=many&object_type=body`;
+  
     const wb_new: xlsx.WorkBook = xlsx.readFile(xlpath);
     const bodies: {}[] = xlsx.utils.sheet_to_json(wb_new.Sheets[table])
 
@@ -47,7 +49,9 @@ export default {
         if (value == "sim" || (value == "não" || value == "nao")) {
           bodies_map.push([key, (value == "sim") ? true : false]);
         } else if(valueArray.length >= 1 && (key as string)[(key as string).length - 1] == "s"){
-          bodies_map.push([key, valueArray])
+          (valueArray && valueArray.length > 0)
+          ? bodies_map.push([key, valueArray])
+          : bodies_map.push([key, ['']]);
         } else {
           bodies_map.push([key, value]);
         }
@@ -65,7 +69,9 @@ export default {
   },
 
   async update(table: string): Promise<void> {
-    let url: string = `${table}?m=many&a=update`;
+    let url: string = cats.includes(table)
+    ? `Produtos/${table}?m=many&u=update`
+    : `${table}?m=many&u=update`;
 
     const wb_new: xlsx.WorkBook = xlsx.readFile(xlpath);
     const bodies: {}[] = xlsx.utils.sheet_to_json(wb_new.Sheets[table])

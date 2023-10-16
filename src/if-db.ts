@@ -10,7 +10,8 @@ dotenv.config({
   path: envPath
 });
 
-const url = process.env.REST_API;
+const url = "http://localhost:8080/" //process.env.REST_API;
+export const cats = ["Tipos", "Marcas", "Modelos", "Grupos"];
 export const instance = axios.create({
   baseURL: url,
   maxRedirects: 1,
@@ -36,7 +37,7 @@ export default (
   async () => {
 
     const token = (await instance.post("auth/User", {
-      name: process.env.MASTER_NAME, passwd: process.env.MASTER_SECRET
+      username: process.env.MASTER_NAME, passwd: process.env.MASTER_SECRET
     }, { withCredentials: true  })).headers['set-cookie']![1];
 
     console.log("Sua token é: " + token + "\n");
@@ -51,7 +52,7 @@ export default (
 
       input = prompt('')
 
-      if (input != undefined && input != ''){
+      if (input != undefined && input != '') {
         try{
           run = await options(input);
         } catch(e) {
@@ -89,9 +90,8 @@ async function options(opt: string): Promise<boolean> {
       return run;
     }
     case 'v': {
-      const data: string[] = (await instance.get('tables/')).data
+      const data: string[] = (await instance.get('/')).data
       const regex: RegExp =  /[A-Z][^A-Z]*[A-Z]/;
-
       const filtered_data = data.filter(str => !regex.test(str));
 
       console.log(filtered_data);
@@ -103,7 +103,8 @@ async function options(opt: string): Promise<boolean> {
     }
     case 'c': {
       const table = prompt('Tabela da consulta: ');
-      const data = (await instance.get(table)).data
+      const url = (cats.includes(table) ? `Produtos/${table}` : table)
+      const data = (await instance.get(url)).data
       console.log(data);
       return run;
     }
@@ -116,8 +117,8 @@ async function options(opt: string): Promise<boolean> {
       let fprop: string[] = []; //Formatted properties
 
       properties.forEach((val, _, ) => {
-        if (val.includes('id_'))  fprop.push(val.split('_')[1]); 
-        else if (val != 'id'){
+        if (val.includes('fk_'))  fprop.push(val.split('_')[1]); 
+        else if (val != 'fk'){
           fprop.push(val);
         }
       })
