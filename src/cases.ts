@@ -70,8 +70,8 @@ export default {
 
   async update(table: string): Promise<void> {
     let url: string = cats.includes(table)
-    ? `Produtos/${table}?m=many&u=update`
-    : `${table}?m=many&u=update`;
+    ? `Produtos/${table}?m=many&u=update&object_type=body`
+    : `${table}?m=many&u=update&object_type=body`;
 
     const wb_new: xlsx.WorkBook = xlsx.readFile(xlpath);
     const bodies: {}[] = xlsx.utils.sheet_to_json(wb_new.Sheets[table])

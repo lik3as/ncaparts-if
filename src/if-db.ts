@@ -10,7 +10,7 @@ dotenv.config({
   path: envPath
 });
 
-const url = "http://localhost:8080/" //process.env.REST_API;
+const url = process.env.REST_API;
 export const cats = ["Tipos", "Marcas", "Modelos", "Grupos"];
 export const instance = axios.create({
   baseURL: url,
